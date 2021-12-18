@@ -77,6 +77,10 @@ typedef struct {
   void* pages[TABLE_MAX_PAGES];
 }  Table;
 
+void print_row(Row *row) {
+  printf("(%d, %s, %s)\n", row->id, row->username, row->email);
+}
+
 void* row_slot(Table* table, uint32_t row_num) {
   uint32_t page_num = row_num / ROWS_PER_PAGE;
   void* page = table->pages[page_num];
@@ -114,9 +118,9 @@ ExecuteResult execute_select(Statement* statement, Table* table) {
 ExecuteResult execute_statement(Statement* statement, Table* table) {
   switch(statement->type) {
     case (STATEMENT_INSERT):
-      return execute_insert(statement, &table);
+      return execute_insert(statement, table);
     case (STATEMENT_SELECT):
-      return execute_select(statement, &table);
+      return execute_select(statement, table);
   }
 }
 
